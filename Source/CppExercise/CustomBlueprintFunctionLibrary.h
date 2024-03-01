@@ -1,0 +1,60 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "CustomBlueprintFunctionLibrary.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class CPPEXERCISE_API UCustomBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	static FVector GetActorWorldLocationOld(AActor* Actor);
+
+	UFUNCTION(BlueprintCallable)
+	static bool GetActorWorldLocation(AActor* Actor, FVector& Location);
+
+	UFUNCTION(BlueprintCallable)
+	static bool GetActorWorldLocationAndName(AActor* Actor, FVector& Location,FString& Name);
+
+	UFUNCTION(BlueprintCallable)
+	static bool SetActorWorldLocation(AActor* Actor,FVector Location);
+
+	UFUNCTION(BlueprintCallable)
+	static FVector GetActorScale3D(AActor* Actor);
+
+	UFUNCTION(BlueprintCallable)
+	static bool SetActorScale3D(AActor* Actor, FVector Scale);
+
+	UFUNCTION(BlueprintCallable)
+	static FRotator GetActorWorldRotation(AActor* Actor);
+
+	UFUNCTION(BlueprintCallable)
+	static bool SetActorWorldRatation(AActor* Actor, FRotator Rotation);
+
+	UFUNCTION(BlueprintCallable)
+	static bool CharacterJump(ACharacter* Character);
+	
+	UFUNCTION(BlueprintCallable)
+	static bool CharacterDubleJump(ACharacter* Character,bool bCanDoubleJump, bool& bOutCanDoubleJump,float LaunchForce = 1000);
+
+	UFUNCTION(BlueprintCallable)
+	static bool SetDynamicMaterial(ACharacter* Character, UMaterial* Material,int32 MaterialIndex);
+
+	UFUNCTION(BlueprintCallable)
+	static bool ChangeCharacterColor(ACharacter* Character, FName ParameterName, FVector4 Color, int32 MaterialIndex);
+
+	UFUNCTION(BlueprintCallable)
+	static bool ChangeCharacterTexture(ACharacter* Character, FName ParameterName, UTexture* Texture, int32 MaterialIndex);
+
+	UFUNCTION(BlueprintCallable)
+	static void BindInput(ACharacter* Character);
+
+};
