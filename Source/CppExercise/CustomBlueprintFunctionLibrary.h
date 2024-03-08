@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Kismet/BlueprintFunctionLibrary.h" 
+#include "DummyInterface.h"
 #include "CustomBlueprintFunctionLibrary.generated.h"
 
 /**
@@ -60,4 +61,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static bool CallInterfaceFunction(UObject* Object);
 
+	UFUNCTION(BlueprintCallable)
+	static bool CallDummyInterface(TScriptInterface<IDummyInterface> Interface);
 };

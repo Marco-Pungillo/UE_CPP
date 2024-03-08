@@ -193,3 +193,12 @@ bool UCustomBlueprintFunctionLibrary::CallInterfaceFunction(UObject* Object)
 	return false;
 }
 
+bool UCustomBlueprintFunctionLibrary::CallDummyInterface(TScriptInterface<IDummyInterface> Interface)
+{
+	if (Interface)
+	{
+		Interface->DummyInterfaceFunction();
+		return true;
+	}
+	return false;
+}
