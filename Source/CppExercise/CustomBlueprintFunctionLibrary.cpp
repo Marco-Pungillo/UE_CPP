@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "DummySaveGame.h"
+#include <Kismet/GameplayStatics.h>
 #include "DummyInterface.h"
 
 
@@ -199,6 +201,38 @@ bool UCustomBlueprintFunctionLibrary::CallDummyInterface(TScriptInterface<IDummy
 	{
 		Interface->DummyInterfaceFunction();
 		return true;
+	}
+	return false;
+}
+
+bool UCustomBlueprintFunctionLibrary::LoadGame(AActor* Actor, FString SlotName, int32 UserIndex)
+{
+	UDummySaveGame* LoadGame = Cast<UDummySaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, UserIndex));
+	if (LoadGame && Actor)
+	{
+		Actor->SetActorLocation(LoadGame->PlayerLocation);
+		Actor->SetActorRotation(LoadGame->PlayerRotator);
+		Actor->SetActorScale3D(LoadGame->PlayerScale);
+		return true;
+	}
+	return false;
+}
+
+bool UCustomBlueprintFunctionLibrary::SaveGame(AActor* Actor, FString SlotName, int32 UserIndex)
+{
+	USaveGame* SaveGame=UGameplayStatics::CreateSaveGameObject(UDummySaveGame::StaticClass());
+	if (SaveGame) 
+	{
+		UDummySaveGame* DummySaveGame = Cast<UDummySaveGame>(SaveGame);
+		if (DummySaveGame && Actor)
+		{
+			DummySaveGame->PlayerLocation = Actor->GetActorLocation();
+			DummySaveGame->PlayerRotator = Actor->GetActorRotation();
+			DummySaveGame->PlayerScale = Actor->GetActorScale();
+
+			UGameplayStatics::SaveGameToSlot(DummySaveGame, SlotName, UserIndex);
+			return true;
+		}
 	}
 	return false;
 }
