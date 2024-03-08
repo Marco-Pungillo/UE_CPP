@@ -7,7 +7,7 @@
 #include "DummyInterface.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI, Blueprintable)
+UINTERFACE(Blueprintable)
 class UDummyInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -24,4 +24,11 @@ class CPPEXERCISE_API IDummyInterface
 public:
 
 	virtual bool DummyInterfaceFunction();
+
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
+	bool DummyBluprintImplementable();
+
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
+	bool DummyBlueprintNative();
+
 };

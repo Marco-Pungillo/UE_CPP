@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FDummyDelegateOneParam,int32,testparam);
 DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(bool, FDummyDelegateOneParamRetVal,int32,testParam);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMulticastTest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMulticastOneParamTest, int32, testparam);
-UCLASS()
+UCLASS(Blueprintable)
 class CPPEXERCISE_API AMyDummyActor : public AActor, public IDummyInterface
 {
 	GENERATED_BODY()
@@ -65,5 +65,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual bool DummyInterfaceFunction() override;
+
+	bool DummyBlueprintNative_Implementation() override;
 
 };

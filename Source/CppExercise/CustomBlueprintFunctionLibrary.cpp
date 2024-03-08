@@ -184,6 +184,9 @@ bool UCustomBlueprintFunctionLibrary::CallInterfaceFunction(UObject* Object)
 	if (InterfaceCast)
 	{
 		InterfaceCast->DummyInterfaceFunction();
+		InterfaceCast->Execute_DummyBluprintImplementable(Object); //Blueprint call
+		InterfaceCast->DummyBlueprintNative_Implementation(); //CPP Implemetation
+		InterfaceCast->Execute_DummyBlueprintNative(Object); //Blueprint Implentation
 		return true;
 	}
 

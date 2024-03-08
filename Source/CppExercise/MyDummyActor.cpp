@@ -61,3 +61,10 @@ bool AMyDummyActor::DummyInterfaceFunction()
 	return true;
 }
 
+
+bool AMyDummyActor::DummyBlueprintNative_Implementation() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("DummyBluprintNative called"));
+	return true;
+}
+
