@@ -53,3 +53,11 @@ void AMyDummyActor::Tick(float DeltaTime)
 
 }
 
+bool AMyDummyActor::DummyInterfaceFunction()
+{
+	//Super::DummyInterfaceFunction()
+
+	UE_LOG(LogTemp, Warning, TEXT("DummyInterfaceFunction called"));
+	return true;
+}
+

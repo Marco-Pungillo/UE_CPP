@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "DummyInterface.h"
 
 
 FVector UCustomBlueprintFunctionLibrary::GetActorWorldLocationOld(AActor* Actor)
@@ -171,5 +172,21 @@ void UCustomBlueprintFunctionLibrary::BindInput(ACharacter* Character)
 	{
 		Input->BindAction(FName("Jump2"), EInputEvent::IE_Pressed, Character, &ACharacter::Jump);
 	}
+}
+
+bool UCustomBlueprintFunctionLibrary::CallInterfaceFunction(UObject* Object)
+{
+	bool bResult = Object->GetClass()->ImplementsInterface(UDummyInterface::StaticClass());
+
+	bResult = Object->Implements<UDummyInterface>();
+
+	IDummyInterface* InterfaceCast = Cast<IDummyInterface>(Object);
+	if (InterfaceCast)
+	{
+		InterfaceCast->DummyInterfaceFunction();
+		return true;
+	}
+
+	return false;
 }
 

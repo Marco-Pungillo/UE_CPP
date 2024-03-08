@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "DummyInterface.h"
 #include "MyDummyActor.generated.h"
+
 
 DECLARE_DYNAMIC_DELEGATE(FDummyDelegate);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FDummyDelegateOneParam,int32,testparam);
@@ -12,7 +14,7 @@ DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(bool, FDummyDelegateOneParamRetVal,int3
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMulticastTest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMulticastOneParamTest, int32, testparam);
 UCLASS()
-class CPPEXERCISE_API AMyDummyActor : public AActor
+class CPPEXERCISE_API AMyDummyActor : public AActor, public IDummyInterface
 {
 	GENERATED_BODY()
 	
@@ -61,5 +63,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual bool DummyInterfaceFunction() override;
 
 };

@@ -57,4 +57,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static void BindInput(ACharacter* Character);
 
+	UFUNCTION(BlueprintCallable)
+	static bool CallInterfaceFunction(UObject* Object);
+
 };
