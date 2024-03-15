@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DummyInterface.h"
+#include "TriggerInterface.h"
 #include "MyDummyActor.generated.h"
 
 
@@ -14,7 +15,7 @@ DECLARE_DYNAMIC_DELEGATE_RetVal_OneParam(bool, FDummyDelegateOneParamRetVal,int3
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMulticastTest);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMulticastOneParamTest, int32, testparam);
 UCLASS(Blueprintable)
-class CPPEXERCISE_API AMyDummyActor : public AActor, public IDummyInterface
+class CPPEXERCISE_API AMyDummyActor : public AActor, public IDummyInterface, public ITriggerInterface
 {
 	GENERATED_BODY()
 	
@@ -68,4 +69,5 @@ public:
 
 	bool DummyBlueprintNative_Implementation() override;
 
+	virtual bool ReactToTrigger() override;
 };

@@ -9,6 +9,10 @@ AMyDummyCharacter::AMyDummyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Colors.Add(FColor::Black);
+	Colors.Add(FColor::Emerald);
+	Colors.Add(FColor::Magenta);
+
 }
 
 void AMyDummyCharacter::FunctionNoPar()
@@ -25,7 +29,9 @@ void AMyDummyCharacter::FunctionFloat(float param)
 void AMyDummyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UMaterial* Material = LoadObject<UMaterial>(nullptr, TEXT("/Game/Custom/M_CustomMaterial.M_CustomMaterial"));
+	UCustomBlueprintFunctionLibrary::SetDynamicMaterial(this, Material, 0);
+
 }
 
 // Called every frame
@@ -43,3 +49,17 @@ void AMyDummyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(FName(""),this,&AMyDummyCharacter::FunctionFloat);
 }
 
+bool AMyDummyCharacter::ReactToTrigger()
+{
+	CurrentColorIndex++;
+	if (CurrentColorIndex >= Colors.Num())
+	{
+		CurrentColorIndex = 0;
+	}
+
+	FColor CurrentColor = Colors[CurrentColorIndex];
+
+	UCustomBlueprintFunctionLibrary::ChangeCharacterColor(this, FName("CustomColor"), FVector4(CurrentColor), 0);
+
+	return true;
+}

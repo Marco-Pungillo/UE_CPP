@@ -68,3 +68,7 @@ bool AMyDummyActor::DummyBlueprintNative_Implementation()
 	return true;
 }
 
+bool AMyDummyActor::ReactToTrigger()
+{
+	return false;
+}

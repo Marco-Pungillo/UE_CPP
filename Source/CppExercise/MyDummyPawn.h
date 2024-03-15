@@ -3,30 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "TriggerInterface.h"
-#include "CustomBlueprintFunctionLibrary.h"
-#include "MyDummyCharacter.generated.h"
+#include "MyDummyPawn.generated.h"
 
 UCLASS()
-class CPPEXERCISE_API AMyDummyCharacter : public ACharacter, public ITriggerInterface
+class CPPEXERCISE_API AMyDummyPawn : public APawn, public ITriggerInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AMyDummyCharacter();
+	// Sets default values for this pawn's properties
+	AMyDummyPawn();
 
-	UFUNCTION(BlueprintCallable)
-	void FunctionNoPar();
-	
-	UFUNCTION(BlueprintCallable)
-	void FunctionFloat(float param);
-
-	UPROPERTY(BlueprintReadWrite)
-	TArray<FColor> Colors;
-
-	int32 CurrentColorIndex = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 TriggerIndex;
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,5 +31,4 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual bool ReactToTrigger() override;
-
 };
