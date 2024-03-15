@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "DummySaveGame.h"
+#include "MyDummyCharacter.h"
 #include <Kismet/GameplayStatics.h>
 #include "DummyInterface.h"
 
@@ -82,7 +83,7 @@ bool UCustomBlueprintFunctionLibrary::CharacterJump(ACharacter* Character)
 	return true;
 }
 
-bool UCustomBlueprintFunctionLibrary::CharacterDubleJump(ACharacter* Character, bool bCanDoubleJump ,bool& bOutCanDoubleJump ,float LaunchForce)
+bool UCustomBlueprintFunctionLibrary::CharacterDubleJump(ACharacter* Character, bool bCanDoubleJump, bool& bOutCanDoubleJump, float LaunchForce)
 {
 	if (!Character || !Character->GetRootComponent())
 	{
@@ -106,7 +107,7 @@ bool UCustomBlueprintFunctionLibrary::CharacterDubleJump(ACharacter* Character, 
 	return true;
 }
 
-bool UCustomBlueprintFunctionLibrary::SetDynamicMaterial(ACharacter* Character, UMaterial* Material,int32 MaterialIndex)
+bool UCustomBlueprintFunctionLibrary::SetDynamicMaterial(ACharacter* Character, UMaterial* Material, int32 MaterialIndex)
 {
 	if (Character)
 	{
@@ -130,17 +131,17 @@ bool UCustomBlueprintFunctionLibrary::SetDynamicMaterial(ACharacter* Character, 
 	return false;
 }
 
-bool UCustomBlueprintFunctionLibrary::ChangeCharacterColor(ACharacter* Character,FName ParameterName, FVector4 Color, int32 MaterialIndex)
+bool UCustomBlueprintFunctionLibrary::ChangeCharacterColor(ACharacter* Character, FName ParameterName, FVector4 Color, int32 MaterialIndex)
 {
-	if (Character) 
+	if (Character)
 	{
-		UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic> (Character->GetMesh()->GetMaterial(MaterialIndex));
+		UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic>(Character->GetMesh()->GetMaterial(MaterialIndex));
 		if (DynamicMaterial)
 		{
 			DynamicMaterial->SetVectorParameterValue(ParameterName, Color);
 			return true;
 		}
-		else 
+		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Dynamic material in null pointer material index worng or materail instance is not dynamic material instance"));
 		}
@@ -205,30 +206,44 @@ bool UCustomBlueprintFunctionLibrary::CallDummyInterface(TScriptInterface<IDummy
 	return false;
 }
 
-bool UCustomBlueprintFunctionLibrary::LoadGame(AActor* Actor, FString SlotName, int32 UserIndex)
+bool UCustomBlueprintFunctionLibrary::LoadGame(UWorld* world, FString SlotName, int32 UserIndex)
 {
 	UDummySaveGame* LoadGame = Cast<UDummySaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, UserIndex));
-	if (LoadGame && Actor)
+	ACharacter* character = UGameplayStatics::GetPlayerCharacter(world, 0);
+	if (LoadGame)
 	{
-		Actor->SetActorLocation(LoadGame->PlayerLocation);
-		Actor->SetActorRotation(LoadGame->PlayerRotator);
-		Actor->SetActorScale3D(LoadGame->PlayerScale);
+		character->SetActorLocation(LoadGame->PlayerSaveData.PlayerLocation);
+		character->SetActorRotation(LoadGame->PlayerSaveData.PlayerRotator);
+		character->SetActorScale3D(LoadGame->PlayerSaveData.PlayerScale);
+		AMyDummyCharacter* dummyCharacter = Cast<AMyDummyCharacter>(character);
+		if (dummyCharacter)
+		{
+			//call change color function for character
+		}
 		return true;
 	}
 	return false;
 }
 
-bool UCustomBlueprintFunctionLibrary::SaveGame(AActor* Actor, FString SlotName, int32 UserIndex)
+bool UCustomBlueprintFunctionLibrary::SaveGame(UWorld* world, FString SlotName, int32 UserIndex)
 {
-	USaveGame* SaveGame=UGameplayStatics::CreateSaveGameObject(UDummySaveGame::StaticClass());
-	if (SaveGame) 
+	USaveGame* SaveGame = UGameplayStatics::CreateSaveGameObject(UDummySaveGame::StaticClass());
+	if (SaveGame)
 	{
+		ACharacter* character = UGameplayStatics::GetPlayerCharacter(world, 0);
 		UDummySaveGame* DummySaveGame = Cast<UDummySaveGame>(SaveGame);
-		if (DummySaveGame && Actor)
+		if (DummySaveGame)
 		{
-			DummySaveGame->PlayerLocation = Actor->GetActorLocation();
-			DummySaveGame->PlayerRotator = Actor->GetActorRotation();
-			DummySaveGame->PlayerScale = Actor->GetActorScale();
+
+			DummySaveGame->PlayerSaveData.PlayerLocation = character->GetActorLocation();
+			DummySaveGame->PlayerSaveData.PlayerRotator = character->GetActorRotation();
+			DummySaveGame->PlayerSaveData.PlayerScale = character->GetActorScale();
+			AMyDummyCharacter* dummyCharacter = Cast<AMyDummyCharacter>(character);
+			if (dummyCharacter)
+			{
+				DummySaveGame->PlayerSaveData.PlayerColor = dummyCharacter->Colors[dummyCharacter->CurrentColorIndex];
+			}
+
 
 			UGameplayStatics::SaveGameToSlot(DummySaveGame, SlotName, UserIndex);
 			return true;

@@ -65,7 +65,7 @@ public:
 	static bool CallDummyInterface(TScriptInterface<IDummyInterface> Interface);
 
 	UFUNCTION(BlueprintCallable)
-	static bool LoadGame(AActor* Actor, FString SlotName, int32 UserIndex);
+	static bool LoadGame(UWorld* world, FString SlotName, int32 UserIndex);
 	UFUNCTION(BlueprintCallable)
-	static bool SaveGame(AActor* Actor, FString SlotName, int32 UserIndex);
+	static bool SaveGame(UWorld* world, FString SlotName, int32 UserIndex);
 };

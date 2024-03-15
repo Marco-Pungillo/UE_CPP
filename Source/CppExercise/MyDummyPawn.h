@@ -12,8 +12,15 @@ class CPPEXERCISE_API AMyDummyPawn : public APawn, public ITriggerInterface
 {
 	GENERATED_BODY()
 
+
 public:
+
 	// Sets default values for this pawn's properties
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FVector> Targets;
+
+	UFUNCTION(BlueprintCallable)
+	void GenerateTargets(float radius,int32 numTarget);
 	AMyDummyPawn();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

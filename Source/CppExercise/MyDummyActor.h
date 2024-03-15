@@ -38,6 +38,9 @@ public:
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FMulticastOneParamTest OnMulticastOneParamTestEvent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Speed;
+
 
 	UFUNCTION(BlueprintCallable)
 	void TestFunction();

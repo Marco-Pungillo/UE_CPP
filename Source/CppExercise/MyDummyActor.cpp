@@ -13,6 +13,8 @@ AMyDummyActor::AMyDummyActor()
 	OnTestDummyEventOneParamRetVal.BindUFunction(this, FName("TestFunctionOneParRetVal"));
 	OnMulticastTestEvent.AddDynamic(this, &AMyDummyActor::BlueprintImplementableFunction);
 	OnMulticastOneParamTestEvent.AddDynamic(this, &AMyDummyActor::BlueprintImplementableFunctionOneParam);
+
+	Speed = 2.5;
 }
 
 void AMyDummyActor::TestFunction()
@@ -70,5 +72,6 @@ bool AMyDummyActor::DummyBlueprintNative_Implementation()
 
 bool AMyDummyActor::ReactToTrigger()
 {
-	return false;
+	Speed *= 2;
+	return true;
 }
