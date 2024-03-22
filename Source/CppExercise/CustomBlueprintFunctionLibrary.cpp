@@ -251,3 +251,14 @@ bool UCustomBlueprintFunctionLibrary::SaveGame(UWorld* world, FString SlotName, 
 	}
 	return false;
 }
+
+bool UCustomBlueprintFunctionLibrary::SpawnandPosses(UWorld* InWorld, UClass* ClassToSpawn, APlayerController* PlayerController)
+{
+	APawn* NewPawn = InWorld->SpawnActor<APawn>(ClassToSpawn, FVector::ZeroVector, FRotator::ZeroRotator);
+	if (NewPawn) 
+	{
+		PlayerController->Possess(NewPawn);
+		return true;
+	}
+	return false;
+}

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h" 
 #include "DummyInterface.h"
+
 #include "CustomBlueprintFunctionLibrary.generated.h"
 
 /**
@@ -68,4 +69,6 @@ public:
 	static bool LoadGame(UWorld* world, FString SlotName, int32 UserIndex);
 	UFUNCTION(BlueprintCallable)
 	static bool SaveGame(UWorld* world, FString SlotName, int32 UserIndex);
+	UFUNCTION(BlueprintCallable)
+	static bool SpawnandPosses(UWorld* InWorld, UClass* ClassToSpawn,APlayerController* PlayerController);
 };
