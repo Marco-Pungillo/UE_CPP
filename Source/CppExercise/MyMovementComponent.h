@@ -22,6 +22,8 @@ public:
 	bool bCannotMoveBackward = false;
 
 	UFUNCTION(BlueprintCallable)
-	void MoveForwardRight(FVector2D InputAxis);
+	void MoveForward(float Input);
+	UFUNCTION(BlueprintCallable)
+	void MoveRight(float Input);
 
 };

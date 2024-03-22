@@ -58,12 +58,16 @@ void UMyMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 			Velocity.Y = 0;
 		}
 	}
+
+	this->Velocity.X = 0;
+	this->Velocity.Y = 0;
 }
 
 
-void UMyMovementComponent::MoveForwardRight(FVector2D InputAxis) {
-	FVector MoveDirection = UpdatedComponent->GetForwardVector() * InputAxis.X * 500;
-	MoveDirection += UpdatedComponent->GetRightVector()* InputAxis.Y * 500;
+void UMyMovementComponent::MoveForward(float Input) 
+{
+	FVector MoveDirection = UpdatedComponent->GetForwardVector() * Input * 500;
+	
 	MoveDirection.Z = Velocity.Z;
 	if (this->bCannotMoveForward && MoveDirection.X > 0)
 	{
@@ -73,9 +77,24 @@ void UMyMovementComponent::MoveForwardRight(FVector2D InputAxis) {
 	{
 		MoveDirection.X = 0;
 	}
-	Velocity = MoveDirection;
+	this->Velocity += MoveDirection;
 }
 
+void UMyMovementComponent::MoveRight(float Input)
+{
+	FVector MoveDirection = UpdatedComponent->GetRightVector() * Input * 500;
+
+	MoveDirection.Z = Velocity.Z;
+	if (this->bCannotMoveForward && MoveDirection.X > 0)
+	{
+		MoveDirection.X = 0;
+	}
+	if (this->bCannotMoveBackward && MoveDirection.X < 0)
+	{
+		MoveDirection.X = 0;
+	}
+	this->Velocity += MoveDirection;
+}
 
 
 
