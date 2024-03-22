@@ -8,10 +8,26 @@ void UMyMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 	const FVector Gravity = { 0,0,-9.81f };
 
-	Velocity += Gravity;
+	if (!this->bIsGrounded)
+	{
+		Velocity += Gravity;
+	}
+	
 	FHitResult Hit;
 
 	bIsGrounded = false;
+
+	if (this->bCannotMoveForward && Velocity.X < 0)
+	{
+		this->bCannotMoveForward = false;
+	}
+	if (this->bCannotMoveBackward && Velocity.X > 0)
+	{
+		this->bCannotMoveBackward = false;
+	}
+
+	//bCannotMoveForward = false;
+	//bCannotMoveBackward = false;
 
 	//UE_LOG(LogTemp, Warning, TEXT("%s"), *Velocity.ToString());
 
@@ -20,23 +36,44 @@ void UMyMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 		FVector CompenetrationCorrection = GetPenetrationAdjustment(Hit);
 		UE_LOG(LogTemp, Warning, TEXT("Compenetration: %s"), *CompenetrationCorrection.ToString());
 		ResolvePenetration(CompenetrationCorrection, Hit, UpdatedComponent->GetComponentQuat());
-		Velocity.X = 0;		//only for gravity
-		Velocity.Y = 0;
+		//Velocity.X = 0;		//only for gravity
+		//Velocity.Y = 0;
 		if (Hit.Normal.Z > 0)
 		{
 			Velocity.Z = 0;
 			this->bIsGrounded=true;
 		}
-
+		if (Hit.Normal.X < 0)
+		{
+			Velocity.X = 0;
+			bCannotMoveForward = true;
+		}
+		if (Hit.Normal.X > 0)
+		{
+			Velocity.X = 0;
+			bCannotMoveBackward = true;
+		}
+		if (Hit.Normal.Y < 0)
+		{
+			Velocity.Y = 0;
+		}
 	}
 }
+
 
 void UMyMovementComponent::MoveForwardRight(FVector2D InputAxis) {
 	FVector MoveDirection = UpdatedComponent->GetForwardVector() * InputAxis.X * 500;
 	MoveDirection += UpdatedComponent->GetRightVector()* InputAxis.Y * 500;
 	MoveDirection.Z = Velocity.Z;
+	if (this->bCannotMoveForward && MoveDirection.X > 0)
+	{
+		MoveDirection.X = 0;
+	}
+	if (this->bCannotMoveBackward && MoveDirection.X < 0)
+	{
+		MoveDirection.X = 0;
+	}
 	Velocity = MoveDirection;
-
 }
 
 

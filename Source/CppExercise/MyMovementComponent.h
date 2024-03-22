@@ -18,7 +18,10 @@ public:
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* TickFunction) override;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bIsGrounded;
+	bool bCannotMoveForward = false;
+	bool bCannotMoveBackward = false;
 
+	UFUNCTION(BlueprintCallable)
 	void MoveForwardRight(FVector2D InputAxis);
 
 };
