@@ -29,7 +29,7 @@ void AAivDummyCharacter::Tick(float DeltaTime)
 	FVector StartPoint = GetActorLocation();
 	FVector EndPoint = GetActorForwardVector() * 1000;
 
-	DrawDebugLine(GetWorld(), StartPoint, EndPoint, FColor::Green);
+	DrawDebugLine(World, StartPoint, EndPoint, FColor::Green);
 
 	bool bHasHit = World->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
 

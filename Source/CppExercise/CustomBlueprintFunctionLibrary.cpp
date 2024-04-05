@@ -287,7 +287,7 @@ bool UCustomBlueprintFunctionLibrary::RayCastFromActor(AActor* InActor, FVector 
 	return bHasHit;
 }
 
-bool UCustomBlueprintFunctionLibrary::RayCastFromPoint(UWorld* InWorld, FVector StartPoint, FVector EndPoint)
+bool UCustomBlueprintFunctionLibrary::RayCastFromPoint(ULevel* InLevel, FVector StartPoint, FVector EndPoint)
 {
 	FHitResult Result;
 
@@ -295,9 +295,11 @@ bool UCustomBlueprintFunctionLibrary::RayCastFromPoint(UWorld* InWorld, FVector 
 
 	FCollisionResponseParams ResponseParams;
 
-	DrawDebugLine(InWorld, StartPoint, EndPoint, FColor::Green);
+	UWorld* World = InLevel->GetWorld();
 
-	bool bHasHit = InWorld->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
+	DrawDebugLine(World, StartPoint, EndPoint, FColor::Green);
+
+	bool bHasHit = World->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
 
 	if (bHasHit)
 	{

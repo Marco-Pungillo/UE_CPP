@@ -78,5 +78,5 @@ public:
 	static bool RayCastFromActor(AActor* InActor, FVector StartPoint, FVector EndPoint);
 
 	UFUNCTION(BlueprintCallable)
-	static bool RayCastFromPoint(UWorld* InWorld, FVector StartPoint, FVector EndPoint);
+	static bool RayCastFromPoint(ULevel* InLevel, FVector StartPoint, FVector EndPoint);
 };
