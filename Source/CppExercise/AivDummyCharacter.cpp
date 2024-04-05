@@ -11,6 +11,41 @@ AAivDummyCharacter::AAivDummyCharacter()
 
 }
 
+bool AAivDummyCharacter::MultiRayCast(FVector StartPoint, FVector EndPoint, ECollisionChannel CollisionChannel)
+{
+	UWorld* World = GetWorld();
+
+	DrawDebugLine(World, StartPoint, EndPoint, FColor::Green);
+	TArray<FHitResult> HitResultArray;
+	bool bHasRis = World->LineTraceMultiByChannel(HitResultArray, StartPoint, EndPoint, CollisionChannel);
+	if (bHasRis) 
+	{
+		for (FHitResult Result : HitResultArray) 
+		{	
+			Result.GetActor()->SetActorLocation(EndPoint);
+		}
+	}
+	return bHasRis;
+}
+
+bool AAivDummyCharacter::OverlapSphere(FVector StartPoint, FVector EndPoint, ECollisionChannel CollisionChannel)
+{
+	UWorld* World = GetWorld();
+	TArray<FHitResult> HitResultArray;
+	DrawDebugSphere(World, StartPoint, Radius, 32, FColor::Green);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActors(ActorsToIgnore);
+	bool bHasRis=World->SweepMultiByChannel(HitResultArray, StartPoint, EndPoint, FQuat::Identity, CollisionChannel, FCollisionShape::MakeSphere(Radius),Params);
+	if (bHasRis)
+	{
+		for (FHitResult Result : HitResultArray)
+		{
+			Result.GetActor()->Destroy();
+		}
+	}
+	return bHasRis;
+}
+
 // Called when the game starts or when spawned
 void AAivDummyCharacter::BeginPlay()
 {
@@ -23,7 +58,7 @@ void AAivDummyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FHitResult Result;
+	/*FHitResult Result;
 
 	UWorld* World = GetWorld();
 	FVector StartPoint = GetActorLocation();
@@ -41,7 +76,12 @@ void AAivDummyCharacter::Tick(float DeltaTime)
 		{
 			InterfaceCast->DummyInterfaceFunction();
 		}
-	}
+	}*/
+	MultiRayCast(GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 1000, ECC_Visibility);
+	FVector StartPoint = GetActorLocation();
+	FVector EndPoint = GetActorLocation() + GetActorForwardVector() * SweepDistance;
+	OverlapSphere(StartPoint, EndPoint, ECC_Visibility);
+	
 }
 
 // Called to bind functionality to input

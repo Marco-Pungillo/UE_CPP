@@ -15,6 +15,16 @@ class CPPEXERCISE_API AAivDummyCharacter : public ACharacter, public IDummyInter
 public:
 	// Sets default values for this character's properties
 	AAivDummyCharacter();
+	UFUNCTION(BlueprintCallable)
+	bool MultiRayCast(FVector StartPoint, FVector EndPoint, ECollisionChannel CollisionChannel);
+	UFUNCTION(BlueprintCallable)
+	bool OverlapSphere(FVector StartPoint, FVector EndPoint, ECollisionChannel CollisionChannel);
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float SweepDistance = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Radius = 100;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<AActor*> ActorsToIgnore;
 
 protected:
 	// Called when the game starts or when spawned
