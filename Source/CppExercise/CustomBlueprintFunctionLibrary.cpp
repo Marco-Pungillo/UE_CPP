@@ -265,7 +265,7 @@ bool UCustomBlueprintFunctionLibrary::SpawnandPosses(UWorld* InWorld, UClass* Cl
 	return false;
 }
 
-bool UCustomBlueprintFunctionLibrary::RayCast(AActor* InActor, FVector StartPoint, FVector EndPoint)
+bool UCustomBlueprintFunctionLibrary::RayCastFromActor(AActor* InActor, FVector StartPoint, FVector EndPoint)
 {
 	FHitResult Result;
 
@@ -278,6 +278,26 @@ bool UCustomBlueprintFunctionLibrary::RayCast(AActor* InActor, FVector StartPoin
 	DrawDebugLine(World, StartPoint, EndPoint, FColor::Green);
 
 	bool bHasHit = World->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
+
+	if (bHasHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Result.GetActor()->GetName());
+	}
+
+	return bHasHit;
+}
+
+bool UCustomBlueprintFunctionLibrary::RayCastFromPoint(UWorld* InWorld, FVector StartPoint, FVector EndPoint)
+{
+	FHitResult Result;
+
+	FCollisionQueryParams Params;
+
+	FCollisionResponseParams ResponseParams;
+
+	DrawDebugLine(InWorld, StartPoint, EndPoint, FColor::Green);
+
+	bool bHasHit = InWorld->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
 
 	if (bHasHit)
 	{

@@ -67,11 +67,16 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static bool LoadGame(UWorld* world, FString SlotName, int32 UserIndex);
+
 	UFUNCTION(BlueprintCallable)
 	static bool SaveGame(UWorld* world, FString SlotName, int32 UserIndex);
+
 	UFUNCTION(BlueprintCallable)
 	static bool SpawnandPosses(UWorld* InWorld, UClass* ClassToSpawn,APlayerController* PlayerController);
 
 	UFUNCTION(BlueprintCallable)
-	static bool RayCast(AActor* InActor, FVector StartPoint, FVector EndPoint);
+	static bool RayCastFromActor(AActor* InActor, FVector StartPoint, FVector EndPoint);
+
+	UFUNCTION(BlueprintCallable)
+	static bool RayCastFromPoint(UWorld* InWorld, FVector StartPoint, FVector EndPoint);
 };

@@ -23,6 +23,25 @@ void AAivDummyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FHitResult Result;
+
+	UWorld* World = GetWorld();
+	FVector StartPoint = GetActorLocation();
+	FVector EndPoint = GetActorForwardVector() * 1000;
+
+	DrawDebugLine(GetWorld(), StartPoint, EndPoint, FColor::Green);
+
+	bool bHasHit = World->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
+
+	if (bHasHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Result.GetActor()->GetName());
+		IDummyInterface* InterfaceCast = Cast<IDummyInterface>(Result.GetActor());
+		if (InterfaceCast)
+		{
+			InterfaceCast->DummyInterfaceFunction();
+		}
+	}
 }
 
 // Called to bind functionality to input
