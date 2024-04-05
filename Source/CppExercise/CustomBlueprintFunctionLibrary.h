@@ -71,4 +71,7 @@ public:
 	static bool SaveGame(UWorld* world, FString SlotName, int32 UserIndex);
 	UFUNCTION(BlueprintCallable)
 	static bool SpawnandPosses(UWorld* InWorld, UClass* ClassToSpawn,APlayerController* PlayerController);
+
+	UFUNCTION(BlueprintCallable)
+	static bool RayCast(AActor* InActor, FVector StartPoint, FVector EndPoint);
 };

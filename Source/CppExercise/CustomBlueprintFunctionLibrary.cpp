@@ -9,6 +9,8 @@
 #include "MyDummyCharacter.h"
 #include <Kismet/GameplayStatics.h>
 #include "DummyInterface.h"
+#include "DrawDebugHelpers.h"
+
 
 
 FVector UCustomBlueprintFunctionLibrary::GetActorWorldLocationOld(AActor* Actor)
@@ -261,4 +263,26 @@ bool UCustomBlueprintFunctionLibrary::SpawnandPosses(UWorld* InWorld, UClass* Cl
 		return true;
 	}
 	return false;
+}
+
+bool UCustomBlueprintFunctionLibrary::RayCast(AActor* InActor, FVector StartPoint, FVector EndPoint)
+{
+	FHitResult Result;
+
+	FCollisionQueryParams Params;
+
+	FCollisionResponseParams ResponseParams;
+
+	UWorld* World = InActor->GetWorld();
+
+	DrawDebugLine(World, StartPoint, EndPoint, FColor::Green);
+
+	bool bHasHit = World->LineTraceSingleByChannel(Result, StartPoint, EndPoint, ECollisionChannel::ECC_Visibility);
+
+	if (bHasHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Result.GetActor()->GetName());
+	}
+
+	return bHasHit;
 }
